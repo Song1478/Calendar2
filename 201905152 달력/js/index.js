@@ -13,6 +13,16 @@ const userAcc = localStorage.getItem(`userAcc`);
 let userPlanObj = JSON.parse(userPlanString) || [];
 let userAccObj = JSON.parse(userAcc) || [];
 
+if (userAccObj.length < 1) {
+  for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
+    const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
+    userAccObj.push([]);
+    for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
+      userAccObj[monthIndex].push([]);
+    }
+  }
+}
+
 function isPlanAddModalVisible(state) {
   const modalDisplay = document.getElementById("plan-add-modal-wrap");
   const planColor = document.getElementById("plan-color");
