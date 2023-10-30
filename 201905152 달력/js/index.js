@@ -13,14 +13,39 @@ const userAcc = localStorage.getItem(`userAcc`);
 let userPlanObj = JSON.parse(userPlanString) || [];
 let userAccObj = JSON.parse(userAcc) || [];
 
-if (userAccObj.length < 1) {
-  for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
-    const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
-    userAccObj.push([]);
-    for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
-      userAccObj[monthIndex].push([]);
+function saveMoney() {
+  const dayplus = document.getElementById("plus").value;
+  const dayminus = document.getElementById("minus").value;
+
+  if (userAccObj.length < 1) {
+    for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
+      const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
+      userAccObj.push([]);
+      for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
+        userAccObj[monthIndex].push([]);
+      }
     }
   }
+
+  const PM = {
+    plus: dayplus,
+    minus: dayminus,
+  };
+
+  for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
+    if (monthIndex == selectedDay.month) {
+      const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
+      console.log(lastDay);
+      for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
+        if (dayIndex == selectedDay.date) {
+          userAccObj[monthIndex][dayIndex] = [PM.plus, PM.minus];
+          console.log(userAccObj[monthIndex][dayIndex - 1]);
+        }
+      }
+    }
+  }
+  const userAcc1 = JSON.stringify(userAccObj);
+  localStorage.setItem("userAcc", userAcc1);
 }
 
 function isPlanAddModalVisible(state) {
@@ -119,7 +144,7 @@ function getPlan(year, month, date) {
   for (var dayoffIndex = 0; dayoffIndex < HoliDays.length; dayoffIndex++) {
     const dateNum = Number(HoliDays[dayoffIndex].dateString.slice(-2));
     if (selectedDate.getDate() == dateNum) {
-      planListUl.innerHTML += `<li><div class="list-contaner"><div class="plan-list-item" onclick="loadEvent(${index})"><span class="plan-item-color" style="background-color: red"></span><span class="plan-item-lable">${HoliDays[dayoffIndex].dateName}</span></div><button class="deleteBtn" onclick="deleteListItem(${index})">ㅡ</button></div></li>`;
+      planListUl.innerHTML += `<li><div class="list-contaner"><div class="plan-list-item"><span class="plan-item-color" style="background-color: red"></span><span class="plan-item-lable">${HoliDays[dayoffIndex].dateName}</span></div><button class="deleteBtn">ㅡ</button></div></li>`;
     }
   }
 
@@ -292,7 +317,7 @@ function savePlan() {
     planTimeEnd: planTimeEnd,
     planLocation: planLocation,
   };
-
+  userPlanObj.push(saveObj);
   refreshCalPlan();
 
   const userPlanString = JSON.stringify(userPlanObj);
@@ -392,20 +417,4 @@ function planDelete() {
       deleteButton.style.display = "none";
     }
   });
-}
-
-function accountCal() {
-  //수입,지출 합계계산.
-  var plus = document.getElementById("plus").value;
-  var minus = document.getElementById("minus").value;
-  var plusacc = 0;
-  var minusacc = 0;
-  var totalacc = 0;
-
-  //for-> plusacc 값을 ->i~ 31일까지 합계총액 마찬가지로 minus 똑같다.  total =
-  //매일매일의 합계도.
-
-  plusacc += plus; //한달 수입
-  minusacc += minus; //한달 지출
-  totalacc = plusacc - minusacc; //한달 수입,지출 합계 배열값.
 }
