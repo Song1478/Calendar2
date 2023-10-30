@@ -8,7 +8,10 @@ window.onload = defineCalendar(nowYear, currentMonth + 1);
 
 // 로컬 스토리지에서 데이터 마운트
 const userPlanString = localStorage.getItem(`userPlan`);
+const userAcc = localStorage.getItem(`userAcc`);
+
 let userPlanObj = JSON.parse(userPlanString) || [];
+let userAccObj = JSON.parse(userAcc) || [];
 
 function isPlanAddModalVisible(state) {
   const modalDisplay = document.getElementById("plan-add-modal-wrap");
@@ -84,12 +87,14 @@ function getPlan(year, month, date) {
   const targetDateDiv = document.getElementById(`date-${date}`); // 클릭한 요소 DOM 객체 가져오기
   const planListUl = document.getElementById("plan-list");
   const selectDateLable = document.getElementById("select-date-lable");
+  const accbookDisplay = document.getElementById("accBook");
 
   planListUl.innerHTML = ""; // 리스트 초기화
   selectDateLable.innerHTML = `${month + 1}월 ${date}일`;
 
   // 선택한 날짜가 이미 선택돼 있는지 판단
   if (!targetDateDiv.classList.contains("active")) {
+    accbookDisplay.style.display = "block";
     for (var i = 1; i <= lastDay; i++) {
       document.getElementById(`date-${i}`).classList.remove("active");
     }
@@ -269,11 +274,6 @@ function savePlan() {
     alert("일정 시작과 종료 시간이 올바르지 않습니다.");
     return;
   }
-
-  /*function clearCalendar() {
-    누른 날짜 배열값 받아서 삭제
-
-  }*/
   const saveObj = {
     planColor: planColor,
     planTitle: planTitle,
@@ -282,10 +282,11 @@ function savePlan() {
     planTimeEnd: planTimeEnd,
     planLocation: planLocation,
   };
-  userPlanObj.push(saveObj);
+
   refreshCalPlan();
 
   const userPlanString = JSON.stringify(userPlanObj);
+
   localStorage.setItem("userPlan", userPlanString);
 
   alert("일정이 등록되었습니다!");

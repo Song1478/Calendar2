@@ -170,3 +170,11 @@
 #bwrap2 {
   display: none;
 }
+
+#accBook {
+  position: absolute;
+  display: none;
+  margin-top: 400px;
+  width: 100%;
+  height: 20%;
+}
