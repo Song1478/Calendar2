@@ -112,6 +112,8 @@ function getPlan(year, month, date) {
   const planListUl = document.getElementById("plan-list");
   const selectDateLable = document.getElementById("select-date-lable");
   const accbookDisplay = document.getElementById("accBook");
+  const targetPlusMoney = document.getElementById("todayP");
+  const targetMinusMoney = document.getElementById("todayM");
 
   planListUl.innerHTML = ""; // 리스트 초기화
   selectDateLable.innerHTML = `${month + 1}월 ${date}일`;
@@ -123,6 +125,15 @@ function getPlan(year, month, date) {
       document.getElementById(`date-${i}`).classList.remove("active");
     }
     targetDateDiv.classList.add("active");
+    MoneyCalculator();
+    /*  console.log(userAccObj[month][date - 1].plus);
+    if (userAccObj[month][date - 1].length == 0) {
+      targetPlusMoney.innerHTML = "오늘 소득: 0";
+      targetMinusMoney.innerHTML = "오늘 지출: 0";
+    } else {
+      targetPlusMoney.innerHTML = `오늘 소득: ${userAccObj[month][date - 1][0].plus}`;
+      targetMinusMoney.innerHTML = `오늘 지출: ${userAccObj[month][date - 1][0].minus}`;
+    }*/
     selectedDay = {
       year: year,
       month: month,
@@ -332,6 +343,22 @@ function saveMoney() {
   localStorage.setItem("userAcc", userAccObjString);
 
   alert("가계부 작성이 완료되었습니다!");
+}
+
+function MoneyCalculator() {
+  let totalaccP = 0;
+  let totalaccM = 0;
+  for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
+    const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
+    for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
+      for (var moneyIndex = 0; moneyIndex < userAccObj[monthIndex][dayIndex].length; moneyIndex++) {
+        totalaccP += parseInt(userAccObj[monthIndex][dayIndex][moneyIndex].plus, 10);
+        totalaccM += parseInt(userAccObj[monthIndex][dayIndex][moneyIndex].minus, 10);
+      }
+    }
+  }
+  console.log(totalaccP);
+  console.log(totalaccM);
 }
 
 function loadEvent(index) {

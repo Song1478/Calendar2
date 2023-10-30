@@ -51,7 +51,7 @@
               <option value="mEtc">기타</option>
             </select>
             <input id="registacc" type="button" value="등록" onclick="saveMoney()" /><br />
-            <br /><span id="todayP">오늘 소득:</span> <br /><span id="todayM">오늘 지출:</span>
+            <br /><span id="todayP"></span> <br /><span id="todayM"></span>
           </div>
           <span id="add-plan-btn" class="plan-btn" title="일정 추가" onclick="isPlanAddModalVisible(true, true)"></span>
           <span id="delete-plan-btn" class="plan-btn" title="일정 삭제" onclick="planDelete()"></span>
@@ -78,13 +78,7 @@
             <textarea id="location-input" placeholder="장소"></textarea>
           </div>
           <div class="btn-wrap">
-            <input
-              id="exit-modal"
-              class="modal-btn"
-              type="button"
-              value="취소"
-              onclick="isPlanAddModalVisible(false)"
-            />
+            <input id="exit-modal" class="modal-btn" type="button" value="취소" onclick="isPlanAddModalVisible(false)" />
             <input id="regist-plan" class="modal-btn" type="button" value="등록" onclick="savePlan()" />
             <input id="fix-plan" class="modal-btn" type="button" value="수정" onclick="fixPlan()" />
           </div>
