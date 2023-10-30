@@ -3,6 +3,7 @@ const nowYear = nowDate.getFullYear();
 let currentMonth = nowDate.getMonth();
 let HoliDays = [];
 let selectedDay;
+let selectedPlanIndex;
 
 window.onload = defineCalendar(nowYear, currentMonth + 1);
 
@@ -13,64 +14,52 @@ const userAcc = localStorage.getItem(`userAcc`);
 let userPlanObj = JSON.parse(userPlanString) || [];
 let userAccObj = JSON.parse(userAcc) || [];
 
-function saveMoney() {
-  const dayplus = document.getElementById("plus").value;
-  const dayminus = document.getElementById("minus").value;
-
-  if (userAccObj.length < 1) {
-    for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
-      const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
-      userAccObj.push([]);
-      for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
-        userAccObj[monthIndex].push([]);
-      }
-    }
-  }
-
-  const PM = {
-    plus: dayplus,
-    minus: dayminus,
-  };
-
+if (userAccObj.length < 1) {
   for (var monthIndex = 0; monthIndex < 12; monthIndex++) {
-    if (monthIndex == selectedDay.month) {
-      const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
-      console.log(lastDay);
-      for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
-        if (dayIndex == selectedDay.date) {
-          userAccObj[monthIndex][dayIndex] = [PM.plus, PM.minus];
-          console.log(userAccObj[monthIndex][dayIndex - 1]);
-        }
-      }
+    const lastDay = new Date(nowYear, monthIndex + 1, 0).getDate();
+    userAccObj.push([]);
+    for (var dayIndex = 0; dayIndex < lastDay; dayIndex++) {
+      userAccObj[monthIndex].push([]);
     }
   }
-  const userAcc1 = JSON.stringify(userAccObj);
-  localStorage.setItem("userAcc", userAcc1);
 }
 
-function isPlanAddModalVisible(state) {
+/**
+ * 일정 추가 또는 수정 modal 창 표출 함수
+ * @param {Boolean} state modal창을 활성화 할건지 안할건지에 대한 여부
+ * @param {Boolean} isInit 활성화할 때 필드 초기화를 할건지 안할건지에 대한 여부
+ */
+function isPlanAddModalVisible(state, isInit) {
   const modalDisplay = document.getElementById("plan-add-modal-wrap");
+
+  const regPlanBtn = document.getElementById("regist-plan");
+  const fixPlanBtn = document.getElementById("fix-plan");
+
   const planColor = document.getElementById("plan-color");
   const planTitle = document.getElementById("title-txt");
   const planSubject = document.getElementById("subject");
   const planTimeStart = document.getElementById("time-start");
   const planTimeEnd = document.getElementById("time-end");
   const planLocation = document.getElementById("location-input");
-  const btnDisplayR = document.getElementById("bwrap");
-  const btnDisplayF = document.getElementById("bwrap2");
 
-  if (state) {
-    modalDisplay.style.display = "flex";
-    btnDisplayR.style.display = "block";
-    btnDisplayF.style.display = "none";
-  } else {
-    modalDisplay.style.display = "none";
+  if (isInit) {
     planColor.value = "";
     planTitle.value = "";
     planSubject.value = "";
     planTimeStart.value = "";
     planTimeEnd.value = "";
     planLocation.value = "";
+    fixPlanBtn.style.display = "none";
+    regPlanBtn.style.display = "block";
+  } else {
+    fixPlanBtn.style.display = "block";
+    regPlanBtn.style.display = "none";
+  }
+
+  if (state) {
+    modalDisplay.style.display = "flex";
+  } else {
+    modalDisplay.style.display = "none";
   }
 }
 
@@ -325,53 +314,49 @@ function savePlan() {
   localStorage.setItem("userPlan", userPlanString);
 
   alert("일정이 등록되었습니다!");
-  isPlanAddModalVisible(false);
+  isPlanAddModalVisible(false, true);
+}
+
+function saveMoney() {
+  const dayPlusValue = document.getElementById("plus").value;
+  const dayMinusValue = document.getElementById("minus").value;
+
+  const changedFinanceObj = {
+    plus: dayPlusValue,
+    minus: dayMinusValue,
+  };
+
+  userAccObj[selectedDay.month][selectedDay.date - 1].push(changedFinanceObj);
+
+  const userAccObjString = JSON.stringify(userAccObj);
+  localStorage.setItem("userAcc", userAccObjString);
+
+  alert("가계부 작성이 완료되었습니다!");
 }
 
 function loadEvent(index) {
   //일정가시화로 추가된 span에 onclick추가하여 note div에 스토리지데이터 로드하는 함수호출
-
-  const modalDisplay = document.getElementById("plan-add-modal-wrap");
+  const fixPlanBtn = document.getElementById("fix-plan");
   let nTitle = document.getElementById("title-txt");
-  let nColor = document.getElementById("plan-color");
   let nSubject = document.getElementById("subject");
   let nLocation = document.getElementById("location-input");
   let nTimeStart = document.getElementById("time-start");
   let nTimeEnd = document.getElementById("time-end");
-  const btnDisplayR = document.getElementById("bwrap");
-  const btnDisplayF = document.getElementById("bwrap2");
-  const fixBtn = document.getElementById("fix-plan");
+  let nColor = document.getElementById("plan-color");
 
-  let arrNum = null;
+  selectedPlanIndex = index;
 
-  arrNum = index;
+  nTitle.value = userPlanObj[index].planTitle;
+  nSubject.value = userPlanObj[index].planSubject;
+  nLocation.value = userPlanObj[index].planLocation;
+  nTimeStart.value = userPlanObj[index].planTimeStart;
+  nTimeEnd.value = userPlanObj[index].planTimeEnd;
+  nColor.value = userPlanObj[index].planColor;
 
-  if (modalDisplay.style.display == "none") {
-    modalDisplay.style.display = "flex";
-    btnDisplayR.style.display = "none";
-    btnDisplayF.style.display = "block";
-
-    nTitle.value = userPlanObj[index].planTitle;
-    nSubject.value = userPlanObj[index].planSubject;
-    nLocation.value = userPlanObj[index].planLocation;
-    nTimeStart.value = userPlanObj[index].planTimeStart;
-    nTimeEnd.value = userPlanObj[index].planTimeEnd;
-    nColor.value = userPlanObj[index].planColor;
-  } else {
-    modalDisplay.style.display = "none";
-  }
-
-  console.log(index);
-  console.log(userPlanObj[index]);
-  console.log(nTimeEnd);
-  console.log(arrNum);
-
-  fixBtn.addEventListener("click", function () {
-    fixPlan(arrNum);
-  });
+  isPlanAddModalVisible(true, false);
 }
 
-function fixPlan(a) {
+function fixPlan() {
   let nTitle = document.getElementById("title-txt");
   let nColor = document.getElementById("plan-color");
   let nSubject = document.getElementById("subject");
@@ -379,18 +364,19 @@ function fixPlan(a) {
   let nTimeStart = document.getElementById("time-start");
   let nTimeEnd = document.getElementById("time-end");
 
-  userPlanObj[a].planTitle = nTitle.value;
-  userPlanObj[a].planSubject = nSubject.value;
-  userPlanObj[a].planLocation = nLocation.value;
-  userPlanObj[a].planTimeStart = nTimeStart.value;
-  userPlanObj[a].planTimeEnd = nTimeEnd.value;
-  userPlanObj[a].planColor = nColor.value;
+  userPlanObj[selectedPlanIndex].planTitle = nTitle.value;
+  userPlanObj[selectedPlanIndex].planSubject = nSubject.value;
+  userPlanObj[selectedPlanIndex].planLocation = nLocation.value;
+  userPlanObj[selectedPlanIndex].planTimeStart = nTimeStart.value;
+  userPlanObj[selectedPlanIndex].planTimeEnd = nTimeEnd.value;
+  userPlanObj[selectedPlanIndex].planColor = nColor.value;
 
   const userPlanString = JSON.stringify(userPlanObj);
   localStorage.setItem("userPlan", userPlanString);
-  alert("수정이 완료되었습니다");
   isPlanAddModalVisible(false);
-  location.reload();
+  refreshCalPlan();
+  getPlan(selectedDay.year, selectedDay.month, selectedDay.date);
+  alert("수정이 완료되었습니다");
 }
 
 function deleteListItem(index) {

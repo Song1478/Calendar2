@@ -13,7 +13,7 @@
 
 .note-container {
   background-color: white;
-  height: 90%;
+  max-height: 600px;
   padding: 40px;
   border-radius: 14px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -133,6 +133,7 @@
 
 .modal-btn {
   height: 40px;
+  width: 49%;
   outline: none;
   font-family: "NanumSquareNeo";
   font-size: 20px;
@@ -147,34 +148,10 @@
   background-color: rgb(209, 227, 243);
 }
 
-#regist-plan {
-  width: 49%;
-}
-
-#exit-modal {
-  width: 49%;
-}
-
-#fix-plan {
-  width: 49%;
-}
-
 #exit-modal:hover {
   background-color: rgb(243, 209, 209);
 }
 
-#bwrap {
-  display: block;
-}
-
-#bwrap2 {
+#fix-plan {
   display: none;
-}
-
-#accBook {
-  position: absolute;
-  display: none;
-  margin-top: 400px;
-  width: 100%;
-  height: 20%;
 }
