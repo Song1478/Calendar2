@@ -34,9 +34,8 @@
       </section>
 
       <section class="note" id="note-wrap">
-        <span id="add-plan-btn" title="일정 추가" onclick="isPlanAddModalVisible(true)"></span>
-        <span id="delete-plan-btn" title="일정 삭제" onclick="planDelete()"> ㅡ </span>
-        <span id="allbtn" title="전체 삭제" onclick="planClear()"> Reset </span>
+        <span id="add-plan-btn" class="plan-btn" title="일정 추가" onclick="isPlanAddModalVisible(true)"></span>
+        <span id="delete-plan-btn" class="plan-btn" title="일정 삭제" onclick="planDelete()"></span>
         <span id="select-date-lable">날짜를 선택해주세요</span>
         <ul id="plan-list"></ul>
       </section>
@@ -59,12 +58,24 @@
             <textarea id="location-input" placeholder="장소"></textarea>
           </div>
           <div class="btn-wrap" id="bwrap">
-            <input id="exit-modal" class="modal-btn" type="button" value="취소" onclick="isPlanAddModalVisible(false)" />
+            <input
+              id="exit-modal"
+              class="modal-btn"
+              type="button"
+              value="취소"
+              onclick="isPlanAddModalVisible(false)"
+            />
             <input id="regist-plan" class="modal-btn" type="button" value="등록" onclick="savePlan()" />
           </div>
           <br />
           <div class="btn-wrap2" id="bwrap2">
-            <input id="exit-modal" class="modal-btn" type="button" value="취소" onclick="isPlanAddModalVisible(false)" />
+            <input
+              id="exit-modal"
+              class="modal-btn"
+              type="button"
+              value="취소"
+              onclick="isPlanAddModalVisible(false)"
+            />
             <input id="fix-plan" class="modal-btn" type="button" value="수정" />
           </div>
           <hr />

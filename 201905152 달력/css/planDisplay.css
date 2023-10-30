@@ -15,7 +15,7 @@
   justify-content: space-between;
 }
 
-#add-plan-btn {
+.plan-btn {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -64,59 +64,28 @@
 }
 
 #delete-plan-btn {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   bottom: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 1px solid #eee;
-  background-color: rgba(0, 0, 0, 0.02);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: all 0.4s;
-  background-color: white;
-  font-size: 25px;
-  color: rgb(255, 0, 0);
-  font-weight: 900;
+  left: 20px;
+}
+
+#delete-plan-btn::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 23px;
+  height: 3px;
+  border-radius: 1px;
+  background-color: #d31414;
+  content: "";
+  transform: translate(-50%, -50%);
 }
 
 #delete-plan-btn:hover {
   transform: translateY(-6px);
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
 }
-/**/
 
-#allbtn {
-  position: absolute;
-  margin-left: 30%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  bottom: 20px;
-  width: 150px;
-  height: 50px;
-  border-radius: 9px;
-  border: 1px solid #eee;
-  background-color: rgba(0, 0, 0, 0.02);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: all 0.4s;
-  background-color: white;
-  font-size: 18px;
-  color: rgb(255, 0, 0);
-  font-weight: 900;
-}
-
-#allbtn:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
-}
-/**/
 #select-date-lable {
   display: block;
   width: 100%;
